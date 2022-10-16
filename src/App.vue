@@ -18,8 +18,8 @@ const onFileChanged = ($event: Event) => {
 
 <template>
   <div class="wrapper">
-    <Input @onFileChanged="onFileChanged" />
-    <Image :imgSrc="imgSrc" />
+    <Input v-if="!imgSrc" @onFileChanged="onFileChanged" />
+    <Image v-else :imgSrc="imgSrc" />
   </div>
 </template>
 
