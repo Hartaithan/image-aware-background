@@ -17,10 +17,15 @@ const onFileChanged = ($event: Event) => {
 </script>
 
 <template>
-  <Input @onFileChanged="onFileChanged" />
-  <Image :imgSrc="imgSrc" />
+  <div class="wrapper">
+    <Input @onFileChanged="onFileChanged" />
+    <Image :imgSrc="imgSrc" />
+  </div>
 </template>
 
 <style scoped>
-
+.wrapper {
+  width: 600px;
+  height: 600px;
+}
 </style>
