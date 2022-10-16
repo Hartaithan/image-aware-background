@@ -43,7 +43,9 @@ const onInputClick = () => {
   width: 100%;
   height: 100%;
   padding: 10px;
-  background: var(--primary-800);
+  background-color: var(--blurred-bg);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   border-radius: 20px;
 }
 

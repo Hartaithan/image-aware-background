@@ -14,7 +14,7 @@ const props = defineProps(['imgSrc'])
   height: 100%;
   padding: 10px;
   border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--blurred-bg);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
