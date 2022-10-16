@@ -1,14 +1,23 @@
 <script setup lang="ts">
-const emit = defineEmits(['onFileChanged'])
+import { ref } from 'vue';
+
+const emit = defineEmits(['onFileChanged']);
+const inputRef = ref<HTMLInputElement | null>(null);
 
 const onChange = ($event: Event) => {
   emit('onFileChanged', $event)
+}
+
+const onInputClick = () => {
+  if (inputRef.value) {
+    inputRef.value.click();
+  }
 }
 </script>
 
 <template>
   <div class="wrapper">
-    <div class="dropzone">
+    <div class="dropzone" @click="onInputClick">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 512 512" xml:space="preserve">
         <path d="M21.333,21.333h213.333v96c0,5.867,4.8,10.667,10.667,10.667h96v74.667h21.333v-85.333c0-1.067-0.32-2.133-0.64-3.2
@@ -25,7 +34,7 @@ const onChange = ($event: Event) => {
       <p>Drop you file here, or browse</p>
       <text>Supports only images</text>
     </div>
-    <input class="input" type="file" @change="onChange($event)" accept="image/*" />
+    <input ref="inputRef" class="input" type="file" @change="onChange($event)" accept="image/*" />
   </div>
 </template>
 
