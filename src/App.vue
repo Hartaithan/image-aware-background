@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import Input from './components/Input.vue';
 
 const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined)
@@ -15,7 +16,7 @@ const onFileChanged = ($event: Event) => {
 </script>
 
 <template>
-  <input type="file" @change="onFileChanged($event)" accept="image/*" />
+  <Input @onFileChanged="onFileChanged" />
   <img :src="imgSrc" />
 </template>
 
