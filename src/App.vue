@@ -5,12 +5,10 @@ import { default as ImageComponent } from './components/Image.vue';
 
 const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);
-const canvas = ref<HTMLCanvasElement | null>(null);
-const ctx = ref<CanvasRenderingContext2D | null>(null);
 
-const getDominantColor = () => {
-  if (ctx.value) {
-    const i = ctx.value.getImageData(0, 0, 1, 1).data;
+const getDominantColor = (ctx: CanvasRenderingContext2D) => {
+  if (ctx) {
+    const i = ctx.getImageData(0, 0, 1, 1).data;
     console.log(`rgba(${i[0]},${i[1]},${i[2]},${i[3]})`);
     console.log("#" + ((1 << 24) + (i[0] << 16) + (i[1] << 8) + i[2]).toString(16).slice(1));
   }
@@ -20,14 +18,14 @@ const createCanvas = (blob: File) => {
   const image = new Image();
   image.src = URL.createObjectURL(blob);
   image.onload = () => {
-    if (canvas.value) {
-      canvas.value.width = image.width;
-      canvas.value.height = image.height;
-      ctx.value = canvas.value.getContext("2d");
-      if (ctx.value) {
-        ctx.value.drawImage(image, 0, 0);
-        getDominantColor()
-      }
+    const canvas = document.createElement('canvas')
+    canvas.setAttribute("visibility", "hidden");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.drawImage(image, 0, 0);
+      getDominantColor(ctx)
     }
   };
 }
@@ -44,7 +42,6 @@ const onFileChanged = ($event: Event) => {
 </script>
 
 <template>
-  <canvas id="canvas" ref="canvas" />
   <div class="wrapper">
     <Input v-if="!imgSrc" @onFileChanged="onFileChanged" />
     <ImageComponent v-else :imgSrc="imgSrc" />
@@ -55,9 +52,5 @@ const onFileChanged = ($event: Event) => {
 .wrapper {
   width: 600px;
   height: 600px;
-}
-
-#canvas {
-  display: none;
 }
 </style>
