@@ -4,7 +4,7 @@ const props = defineProps(['imgSrc'])
 
 <template>
   <div class="wrapper">
-    <img class="image" :src="props.imgSrc" />
+    <img id="preview" class="preview" :src="props.imgSrc" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ const props = defineProps(['imgSrc'])
   backdrop-filter: blur(5px);
 }
 
-.image {
+.preview {
   width: 100%;
   height: 100%;
   object-fit: contain;
