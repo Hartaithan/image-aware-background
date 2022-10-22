@@ -35,7 +35,10 @@ const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: 
     rgb.g = ~~(rgb.g / count);
     rgb.b = ~~(rgb.b / count);
 
-    console.info("total:", JSON.stringify(total, null, 2));
+    const sorted: { [key: string]: number; } = {};
+    Object.keys(total).sort((a, b) => total[b] - total[a]).forEach(s => sorted[s] = total[s]);
+
+    console.info("total:", JSON.stringify(sorted, null, 2));
 
     const color = {
       rgb: `rgb(${rgb.r},${rgb.g},${rgb.b})`,
