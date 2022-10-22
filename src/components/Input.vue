@@ -5,7 +5,10 @@ const emit = defineEmits(['onFileChanged']);
 const inputRef = ref<HTMLInputElement | null>(null);
 
 const onChange = ($event: Event) => {
-  emit('onFileChanged', $event)
+  const target = $event.target as HTMLInputElement;
+  if (target && target.files) {
+    emit('onFileChanged', target.files)
+  }
 }
 
 const onInputClick = () => {
@@ -13,11 +16,37 @@ const onInputClick = () => {
     inputRef.value.click();
   }
 }
+
+const handleDrop = (event: DragEvent) => {
+  event.preventDefault();
+  const target = event.target as HTMLInputElement;
+  if (target && event.dataTransfer && event.dataTransfer.files) {
+    emit('onFileChanged', event.dataTransfer.files)
+  }
+  target.classList.remove('on-drag');
+}
+
+const handleDragOver = (event: DragEvent) => {
+  event.preventDefault();
+  console.log('handleDragOver :>> ', event);
+}
+
+const handleDragEnter = (event: DragEvent) => {
+  const target = event.target as HTMLInputElement;
+  target.classList.add('on-drag');
+}
+
+const handleDragLeave = (event: DragEvent) => {
+  const target = event.target as HTMLInputElement;
+  target.classList.remove('on-drag');
+}
+
 </script>
 
 <template>
   <div class="wrapper">
-    <div class="dropzone" @click="onInputClick">
+    <div class="dropzone" @click="onInputClick" @drop="handleDrop" @dragover="handleDragOver"
+      @dragenter="handleDragEnter" @dragleave="handleDragLeave">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 512 512" xml:space="preserve">
         <path d="M21.333,21.333h213.333v96c0,5.867,4.8,10.667,10.667,10.667h96v74.667h21.333v-85.333c0-1.067-0.32-2.133-0.64-3.2
@@ -65,6 +94,10 @@ const onInputClick = () => {
   cursor: pointer;
 }
 
+.dropzone>* {
+  pointer-events: none;
+}
+
 .dropzone svg {
   width: 100px;
   height: 100px;
@@ -79,5 +112,10 @@ const onInputClick = () => {
 
 .dropzone text {
   font-size: 14px;
+}
+
+.on-drag {
+  border: 1px dashed var(--primary-100);
+  background: var(--primary-900);
 }
 </style>

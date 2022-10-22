@@ -33,14 +33,11 @@ const createCanvas = (blob: File) => {
   }
 }
 
-const onFileChanged = ($event: Event) => {
-  const target = $event.target as HTMLInputElement
-  if (target && target.files) {
-    const image = target.files[0]
-    file.value = image
-    imgSrc.value = URL.createObjectURL(image)
-    createCanvas(image)
-  }
+const onFileChanged = (files: FileList) => {
+  const image = files[0]
+  file.value = image
+  imgSrc.value = URL.createObjectURL(image)
+  createCanvas(image)
 }
 </script>
 
