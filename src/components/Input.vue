@@ -28,7 +28,6 @@ const handleDrop = (event: DragEvent) => {
 
 const handleDragOver = (event: DragEvent) => {
   event.preventDefault();
-  console.log('handleDragOver :>> ', event);
 }
 
 const handleDragEnter = (event: DragEvent) => {
