@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(['imgSrc'])
+const props = defineProps(['imgSrc']);
 </script>
 
 <template>

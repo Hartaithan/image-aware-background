@@ -7,38 +7,38 @@ const inputRef = ref<HTMLInputElement | null>(null);
 const onChange = ($event: Event) => {
   const target = $event.target as HTMLInputElement;
   if (target && target.files) {
-    emit('onFileChanged', target.files)
+    emit('onFileChanged', target.files);
   }
-}
+};
 
 const onInputClick = () => {
   if (inputRef.value) {
     inputRef.value.click();
   }
-}
+};
 
 const handleDrop = (event: DragEvent) => {
   event.preventDefault();
   const target = event.target as HTMLInputElement;
   if (target && event.dataTransfer && event.dataTransfer.files) {
-    emit('onFileChanged', event.dataTransfer.files)
+    emit('onFileChanged', event.dataTransfer.files);
   }
   target.classList.remove('on-drag');
-}
+};
 
 const handleDragOver = (event: DragEvent) => {
   event.preventDefault();
-}
+};
 
 const handleDragEnter = (event: DragEvent) => {
   const target = event.target as HTMLInputElement;
   target.classList.add('on-drag');
-}
+};
 
 const handleDragLeave = (event: DragEvent) => {
   const target = event.target as HTMLInputElement;
   target.classList.remove('on-drag');
-}
+};
 
 </script>
 
