@@ -15,16 +15,27 @@ const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: 
     let rgb = { r: 0, g: 0, b: 0 };
     const image = ctx.getImageData(0, 0, width, height).data;
 
+    const total: { [key: string]: number; } = {};
+
     while ((n += blockSize * 4) < image.length) {
       ++count;
-      rgb.r += image[n];
-      rgb.g += image[n + 1];
-      rgb.b += image[n + 2];
+      const blockRgb = [image[n], image[n + 1], image[n + 2]];
+      rgb.r += blockRgb[0];
+      rgb.g += blockRgb[1];
+      rgb.b += blockRgb[2];
+      const block: string = `${blockRgb[0]},${blockRgb[1]},${blockRgb[2]}`;
+      if (total[block]) {
+        total[block] += 1;
+      } else {
+        total[block] = 1;
+      }
     }
 
     rgb.r = ~~(rgb.r / count);
     rgb.g = ~~(rgb.g / count);
     rgb.b = ~~(rgb.b / count);
+
+    console.info("total:", JSON.stringify(total, null, 2));
 
     const color = {
       rgb: `rgb(${rgb.r},${rgb.g},${rgb.b})`,
