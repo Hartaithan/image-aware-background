@@ -41,18 +41,17 @@ const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: 
     rgb.g = ~~(rgb.g / count);
     rgb.b = ~~(rgb.b / count);
 
-    const sorted: { [key: string]: number; } = {};
-    Object.keys(total).sort((a, b) => total[b] - total[a]).forEach(s => sorted[s] = total[s]);
-    const mostUsedColors: IColor[] = [];
-    Object.keys({ ...total }).splice(0, 5).map(key => {
+    const sorted: IColor[] = [];
+    Object.keys(total).sort((a, b) => total[b] - total[a]).forEach(key => {
       const data = key.split(',').map(Number);
-      mostUsedColors.push({
+      sorted.push({
         rgb: `rgb(${data[0]},${data[1]},${data[2]})`,
         hex: "#" + ((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)
       });
     });
+    const mostUsed: IColor[] = [...sorted].splice(0, 5);
 
-    colors.value = mostUsedColors;
+    colors.value = mostUsed;
 
     console.info("total:", JSON.stringify(sorted, null, 2));
 
