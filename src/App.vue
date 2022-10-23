@@ -96,9 +96,7 @@ const onFileChanged = (files: FileList) => {
       <Input v-if="!imgSrc" @onFileChanged="onFileChanged" />
       <ImageComponent v-else :imgSrc="imgSrc" />
     </div>
-    <template v-if="colors.length > 0">
-      <MostUsed :colors="colors" />
-    </template>
+    <MostUsed :colors="colors" />
   </div>
 </template>
 
@@ -110,7 +108,7 @@ const onFileChanged = (files: FileList) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background 0.5s ease-in;
+  transition: background 1s ease-in;
 }
 
 .wrapper {

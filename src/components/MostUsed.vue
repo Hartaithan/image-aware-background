@@ -3,15 +3,19 @@ const props = defineProps(['colors']);
 </script>
 
 <template>
-  <div class="colors-wrapper">
-    <p class="title">MOST USED COLORS</p>
-    <div class="colors">
-      <div class="color" v-for="color in props.colors" :key="color.id" :style="{background: color.hex}">
-        <p>RGB: {{color.rgb}}</p>
-        <p>HEX: {{color.hex}}</p>
+  <Transition name="fade">
+    <template v-if="colors.length > 0">
+      <div class="colors-wrapper">
+        <p class="title">MOST USED COLORS</p>
+        <div class="colors">
+          <div class="color" v-for="color in props.colors" :key="color.id" :style="{background: color.hex}">
+            <p>RGB: {{color.rgb}}</p>
+            <p>HEX: {{color.hex}}</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </Transition>
 </template>
     
 <style scoped>
@@ -55,5 +59,15 @@ p {
   font-weight: 600;
   text-align: center;
   margin-bottom: 12px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
