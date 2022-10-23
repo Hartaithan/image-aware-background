@@ -110,6 +110,7 @@ const onFileChanged = (files: FileList) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background 0.5s ease-in;
 }
 
 .wrapper {
