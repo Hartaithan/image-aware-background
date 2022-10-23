@@ -3,9 +3,15 @@ import { ref } from 'vue';
 import Input from './components/Input.vue';
 import { default as ImageComponent } from './components/Image.vue';
 
+interface IColor {
+  rgb: string;
+  hex: string;
+}
+
 const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);
 const background = ref<string | undefined>(undefined);
+const colors = ref<IColor[]>([]);
 const blockSize = 5;
 
 const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
@@ -37,6 +43,16 @@ const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: 
 
     const sorted: { [key: string]: number; } = {};
     Object.keys(total).sort((a, b) => total[b] - total[a]).forEach(s => sorted[s] = total[s]);
+    const mostUsedColors: IColor[] = [];
+    Object.keys({ ...total }).splice(0, 5).map(key => {
+      const data = key.split(',').map(Number);
+      mostUsedColors.push({
+        rgb: `rgb(${data[0]},${data[1]},${data[2]})`,
+        hex: "#" + ((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)
+      });
+    });
+
+    colors.value = mostUsedColors;
 
     console.info("total:", JSON.stringify(sorted, null, 2));
 
@@ -96,5 +112,10 @@ const onFileChanged = (files: FileList) => {
 .wrapper {
   width: 600px;
   height: 600px;
+}
+
+.color {
+  width: 100px;
+  height: 100px;
 }
 </style>
