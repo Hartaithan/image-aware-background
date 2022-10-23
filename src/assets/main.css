@@ -16,3 +16,7 @@ body,
   width: 100%;
   background: var(--primary-900);
 }
+
+#app {
+  position: relative;
+}

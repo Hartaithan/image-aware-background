@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import Input from './components/Input.vue';
 import { default as ImageComponent } from './components/Image.vue';
+import MostUsed from './components/MostUsed.vue';
 
 interface IColor {
   rgb: string;
@@ -53,7 +54,7 @@ const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: 
 
     colors.value = mostUsed;
 
-    console.info("total:", JSON.stringify(sorted, null, 2));
+    console.info("mostUsed:", JSON.stringify(mostUsed, null, 2));
 
     const color = {
       rgb: `rgb(${rgb.r},${rgb.g},${rgb.b})`,
@@ -90,11 +91,14 @@ const onFileChanged = (files: FileList) => {
 </script>
 
 <template>
-  <div class="content" :style="{'background': background}">
+  <div class="content" :style="{ background }">
     <div class="wrapper">
       <Input v-if="!imgSrc" @onFileChanged="onFileChanged" />
       <ImageComponent v-else :imgSrc="imgSrc" />
     </div>
+    <template v-if="colors.length > 0">
+      <MostUsed :colors="colors" />
+    </template>
   </div>
 </template>
 
