@@ -26,6 +26,19 @@ const props = defineProps(['colors']);
   height: 70px;
 }
 
+p {
+  font-weight: 600;
+  text-shadow:
+    1px 0 black,
+    0 1px black,
+    -1px 0 black,
+    0 -1px black,
+    -1px -1px black,
+    -1px 1px black,
+    1px -1px black,
+    1px 1px black;
+}
+
 .color {
   display: flex;
   flex-direction: column;
@@ -34,7 +47,12 @@ const props = defineProps(['colors']);
   flex: 1;
 }
 
+.color>p {
+  letter-spacing: 0.5px;
+}
+
 .title {
+  font-weight: 600;
   text-align: center;
   margin-bottom: 12px;
 }
