@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Input from './components/Input.vue';
-import { default as ImageComponent } from './components/Image.vue';
 import MostUsed from './components/MostUsed.vue';
 import type { IColor } from './models/ColorModel';
 
@@ -88,10 +87,7 @@ const onFileChanged = (files: FileList) => {
 
 <template>
   <div class="content" :style="{ background }">
-    <div class="wrapper">
-      <Input v-if="!imgSrc" @onFileChanged="onFileChanged" />
-      <ImageComponent v-else :imgSrc="imgSrc" />
-    </div>
+    <Input :imgSrc="imgSrc" @onFileChanged="onFileChanged" />
     <MostUsed :colors="colors" />
   </div>
 </template>
@@ -105,11 +101,6 @@ const onFileChanged = (files: FileList) => {
   justify-content: center;
   align-items: center;
   transition: background 1s ease-in;
-}
-
-.wrapper {
-  width: 600px;
-  height: 600px;
 }
 
 .color {
