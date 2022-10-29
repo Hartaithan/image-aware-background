@@ -7,22 +7,10 @@ const props = defineProps<IImageProps>();
 </script>
 
 <template>
-  <div class="wrapper">
-    <img id="preview" class="preview" :src="props.imgSrc" />
-  </div>
+  <img id="preview" class="preview" :src="props.imgSrc" />
 </template>
 
 <style scoped>
-.wrapper {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  border-radius: 20px;
-  background-color: var(--blurred-bg);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-}
-
 .preview {
   width: 100%;
   height: 100%;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Dropzone from './Dropzone.vue';
+import Image from './Image.vue';
 
 interface IInputProps {
   imgSrc: string | undefined;
@@ -52,7 +53,7 @@ const handleDragLeave = (event: DragEvent) => {
   <div class="wrapper" @click="onInputClick" @drop="handleDrop" @dragover="handleDragOver" @dragenter="handleDragEnter"
     @dragleave="handleDragLeave">
     <Dropzone v-if="!props.imgSrc" />
-    <img v-else id="preview" class="preview" :src="props.imgSrc" />
+    <Image v-else :imgSrc="props.imgSrc" />
     <input ref="inputRef" class="input" type="file" @change="onChange($event)" accept="image/*" />
   </div>
 </template>
@@ -76,11 +77,5 @@ const handleDragLeave = (event: DragEvent) => {
 .on-drag {
   border: 1px dashed var(--primary-100);
   background: var(--primary-900);
-}
-
-.preview {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 </style>
