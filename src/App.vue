@@ -3,11 +3,7 @@ import { ref } from 'vue';
 import Input from './components/Input.vue';
 import { default as ImageComponent } from './components/Image.vue';
 import MostUsed from './components/MostUsed.vue';
-
-interface IColor {
-  rgb: string;
-  hex: string;
-}
+import type { IColor } from './models/ColorModel';
 
 const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);

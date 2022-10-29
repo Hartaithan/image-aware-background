@@ -1,5 +1,11 @@
 <script setup lang="ts">
-const props = defineProps(['colors']);
+import type { IColor } from '@/models/ColorModel';
+
+interface IMostUsedProps {
+  colors: IColor[];
+}
+
+const props = defineProps<IMostUsedProps>();
 </script>
 
 <template>
@@ -8,7 +14,7 @@ const props = defineProps(['colors']);
       <div class="colors-wrapper">
         <p class="title">MOST USED COLORS</p>
         <div class="colors">
-          <div class="color" v-for="color in props.colors" :key="color.id" :style="{background: color.hex}">
+          <div class="color" v-for="color in props.colors" :key="color.hex" :style="{background: color.hex}">
             <p>RGB: {{color.rgb}}</p>
             <p>HEX: {{color.hex}}</p>
           </div>

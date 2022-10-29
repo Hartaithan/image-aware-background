@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const props = defineProps(['imgSrc']);
+interface IImageProps {
+  imgSrc: string | undefined;
+}
+
+const props = defineProps<IImageProps>();
 </script>
 
 <template>
