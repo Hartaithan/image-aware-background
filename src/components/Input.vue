@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import DropzoneIcon from './DropzoneIcon.vue';
+import Dropzone from './Dropzone.vue';
 
 interface IInputProps {
   imgSrc: string | undefined;
@@ -51,13 +51,7 @@ const handleDragLeave = (event: DragEvent) => {
 <template>
   <div class="wrapper" @click="onInputClick" @drop="handleDrop" @dragover="handleDragOver" @dragenter="handleDragEnter"
     @dragleave="handleDragLeave">
-    <template v-if="!props.imgSrc">
-      <div class="dropzone">
-        <DropzoneIcon />
-        <p>Drop you file here, or browse</p>
-        <text>Supports only images</text>
-      </div>
-    </template>
+    <Dropzone v-if="!props.imgSrc" />
     <img v-else id="preview" class="preview" :src="props.imgSrc" />
     <input ref="inputRef" class="input" type="file" @change="onChange($event)" accept="image/*" />
   </div>
@@ -77,38 +71,6 @@ const handleDragLeave = (event: DragEvent) => {
 
 .input {
   display: none;
-}
-
-.dropzone {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px dashed var(--primary-600);
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.dropzone>* {
-  pointer-events: none;
-}
-
-.dropzone svg {
-  width: 100px;
-  height: 100px;
-  fill: var(--primary-50);
-  margin-bottom: 12px;
-}
-
-.dropzone p {
-  font-size: 20px;
-  margin-bottom: 6px;
-}
-
-.dropzone text {
-  font-size: 14px;
 }
 
 .on-drag {
