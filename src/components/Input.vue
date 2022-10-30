@@ -1,13 +1,7 @@
 <script setup lang="ts">
+import type { IInputExposed } from '@/models/InputModel';
 import { ref } from 'vue';
-import Dropzone from './Dropzone.vue';
-import Image from './Image.vue';
 
-interface IInputProps {
-  imgSrc: string | undefined;
-}
-
-const props = defineProps<IInputProps>();
 const emit = defineEmits(['onFileChanged']);
 const inputRef = ref<HTMLInputElement | null>(null);
 
@@ -47,29 +41,22 @@ const handleDragLeave = (event: DragEvent) => {
   target.classList.remove('on-drag');
 };
 
+defineExpose<IInputExposed>({
+  inputRef,
+  onChange,
+  onClick: onInputClick,
+  handleDrop,
+  handleDragOver,
+  handleDragEnter,
+  handleDragLeave,
+});
 </script>
 
 <template>
-  <div class="wrapper" @click="onInputClick" @drop="handleDrop" @dragover="handleDragOver" @dragenter="handleDragEnter"
-    @dragleave="handleDragLeave">
-    <Dropzone v-if="!props.imgSrc" />
-    <Image v-else :imgSrc="props.imgSrc" />
-    <input ref="inputRef" class="input" type="file" @change="onChange($event)" accept="image/*" />
-  </div>
+  <input ref="inputRef" class="input" type="file" @change="onChange($event)" accept="image/*" />
 </template>
 
 <style scoped>
-.wrapper {
-  width: 600px;
-  height: 600px;
-  padding: 10px;
-  background-color: var(--blurred-bg);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  border-radius: 20px;
-  cursor: pointer;
-}
-
 .input {
   display: none;
 }

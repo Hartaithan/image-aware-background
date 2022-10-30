@@ -5,11 +5,15 @@ import MostUsed from './components/MostUsed.vue';
 import type { IColor } from './models/ColorModel';
 import { createCanvas } from './canvas';
 import { getDominantColor } from './color';
+import type { IInputExposed } from './models/InputModel';
+import Dropzone from './components/Dropzone.vue';
+import Image from './components/Image.vue';
 
 const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);
 const background = ref<string | undefined>(undefined);
 const colors = ref<IColor[]>([]);
+const input = ref<IInputExposed | null>(null);
 
 const onFileChanged = async (files: FileList) => {
   const image = files[0];
@@ -27,11 +31,24 @@ const onFileChanged = async (files: FileList) => {
     console.table(mostUsed);
   }
 };
+
+const handlers = {
+  onClick: () => input.value && input.value.onClick(),
+  handleDrop: (event: DragEvent) => input.value && input.value.handleDrop(event),
+  handleDragOver: (event: DragEvent) => input.value && input.value.handleDragOver(event),
+  handleDragEnter: (event: DragEvent) => input.value && input.value.handleDragEnter(event),
+  handleDragLeave: (event: DragEvent) => input.value && input.value.handleDragLeave(event),
+};
 </script>
 
 <template>
   <div class="content" :style="{ background }">
-    <Input :imgSrc="imgSrc" @onFileChanged="onFileChanged" />
+    <div class="wrapper" @click="handlers.onClick" @drop="handlers.handleDrop" @dragover="handlers.handleDragOver"
+      @dragenter="handlers.handleDragEnter" @dragleave="handlers.handleDragLeave">
+      <Dropzone v-if="!imgSrc" />
+      <Image v-else :imgSrc="imgSrc" />
+      <Input ref="input" :imgSrc="imgSrc" @onFileChanged="onFileChanged" />
+    </div>
     <MostUsed :colors="colors" />
   </div>
 </template>
@@ -45,6 +62,17 @@ const onFileChanged = async (files: FileList) => {
   justify-content: center;
   align-items: center;
   transition: background 1s ease-in;
+}
+
+.wrapper {
+  width: 600px;
+  height: 600px;
+  padding: 10px;
+  background-color: var(--blurred-bg);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .color {
