@@ -4,63 +4,12 @@ import Input from './components/Input.vue';
 import MostUsed from './components/MostUsed.vue';
 import type { IColor } from './models/ColorModel';
 import { createCanvas } from './canvas';
+import { getDominantColor } from './color';
 
 const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);
 const background = ref<string | undefined>(undefined);
 const colors = ref<IColor[]>([]);
-const blockSize = 5;
-
-const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-  if (ctx) {
-    let n = -4;
-    let count = 0;
-    let rgb = { r: 0, g: 0, b: 0 };
-    const image = ctx.getImageData(0, 0, width, height).data;
-
-    const total: { [key: string]: number; } = {};
-
-    while ((n += blockSize * 4) < image.length) {
-      ++count;
-      const blockRgb = [image[n], image[n + 1], image[n + 2]];
-      rgb.r += blockRgb[0];
-      rgb.g += blockRgb[1];
-      rgb.b += blockRgb[2];
-      const block: string = `${blockRgb[0]},${blockRgb[1]},${blockRgb[2]}`;
-      if (total[block]) {
-        total[block] += 1;
-      } else {
-        total[block] = 1;
-      }
-    }
-
-    rgb.r = ~~(rgb.r / count);
-    rgb.g = ~~(rgb.g / count);
-    rgb.b = ~~(rgb.b / count);
-
-    const sorted: IColor[] = [];
-    Object.keys(total).sort((a, b) => total[b] - total[a]).forEach(key => {
-      const data = key.split(',').map(Number);
-      sorted.push({
-        rgb: `rgb(${data[0]},${data[1]},${data[2]})`,
-        hex: "#" + ((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)
-      });
-    });
-    const mostUsed: IColor[] = [...sorted].splice(0, 5);
-
-    colors.value = mostUsed;
-
-    console.info("mostUsed:", JSON.stringify(mostUsed, null, 2));
-
-    const color = {
-      rgb: `rgb(${rgb.r},${rgb.g},${rgb.b})`,
-      hex: "#" + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1)
-    };
-    background.value = color.hex;
-
-    console.info("dominant color:", color);
-  }
-};
 
 const onFileChanged = async (files: FileList) => {
   const image = files[0];
@@ -68,8 +17,14 @@ const onFileChanged = async (files: FileList) => {
   imgSrc.value = URL.createObjectURL(image);
   const canvas = await createCanvas(image);
   if (canvas) {
+    const blockSize = 5;
     const { ctx, width, height } = canvas;
-    getDominantColor(ctx, width, height);
+    const { value, mostUsed } = getDominantColor(blockSize, ctx, width, height);
+    colors.value = mostUsed;
+    background.value = value.hex;
+    console.info('dominant color', value);
+    console.info('most used colors:');
+    console.table(mostUsed);
   }
 };
 </script>
