@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import Input from './components/Input.vue';
 import MostUsed from './components/MostUsed.vue';
 import type { IColor } from './models/ColorModel';
+import { createCanvas } from './canvas';
 
 const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);
@@ -61,27 +62,15 @@ const getDominantColor = (ctx: CanvasRenderingContext2D, width: number, height: 
   }
 };
 
-const createCanvas = (blob: File) => {
-  const image = new Image();
-  image.src = URL.createObjectURL(blob);
-  image.onload = () => {
-    const canvas = document.createElement('canvas');
-    canvas.setAttribute("visibility", "hidden");
-    canvas.width = image.width;
-    canvas.height = image.height;
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.drawImage(image, 0, 0);
-      getDominantColor(ctx, image.width, image.height);
-    }
-  };
-};
-
-const onFileChanged = (files: FileList) => {
+const onFileChanged = async (files: FileList) => {
   const image = files[0];
   file.value = image;
   imgSrc.value = URL.createObjectURL(image);
-  createCanvas(image);
+  const canvas = await createCanvas(image);
+  if (canvas) {
+    const { ctx, width, height } = canvas;
+    getDominantColor(ctx, width, height);
+  }
 };
 </script>
 
