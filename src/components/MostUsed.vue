@@ -9,14 +9,14 @@ const props = defineProps<IMostUsedProps>();
 </script>
 
 <template>
-  <Transition name="fade">
+  <Transition name="long-fade">
     <template v-if="colors.length > 0">
       <div class="colors-wrapper">
         <p class="title">MOST USED COLORS</p>
         <div class="colors">
-          <div class="color" v-for="color in props.colors" :key="color.hex" :style="{background: color.hex}">
-            <p>RGB: {{color.rgb}}</p>
-            <p>HEX: {{color.hex}}</p>
+          <div class="color" v-for="color in props.colors" :key="color.hex" :style="{ background: color.hex }">
+            <p>RGB: {{ color.rgb }}</p>
+            <p>HEX: {{ color.hex }}</p>
           </div>
         </div>
       </div>
@@ -65,15 +65,5 @@ p {
   font-weight: 600;
   text-align: center;
   margin-bottom: 12px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

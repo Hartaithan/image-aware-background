@@ -1,0 +1,19 @@
+.slow-fade-enter-active,
+.slow-fade-leave-active {
+  transition: opacity 0.3s ease-in;
+}
+
+.slow-fade-enter-from,
+.slow-fade-leave-to {
+  opacity: 0;
+}
+
+.long-fade-enter-active,
+.long-fade-leave-active {
+  transition: opacity 1s ease;
+}
+
+.long-fade-enter-from,
+.long-fade-leave-to {
+  opacity: 0;
+}

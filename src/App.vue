@@ -52,7 +52,7 @@ const handlers = {
   <div class="content" :style="{ background }">
     <div class="wrapper" @click="handlers.onClick" @drop="handlers.handleDrop" @dragover="handlers.handleDragOver"
       @dragenter="handlers.handleDragEnter" @dragleave="handlers.handleDragLeave">
-      <Transition name="fade" mode="out-in">
+      <Transition name="slow-fade" mode="out-in">
         <Dropzone v-if="!imgSrc" />
         <Image v-else :imgSrc="imgSrc" />
       </Transition>
@@ -92,15 +92,5 @@ button {
 .color {
   width: 100px;
   height: 100px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease-in;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>
