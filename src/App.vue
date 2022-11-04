@@ -32,6 +32,13 @@ const onFileChanged = async (files: FileList) => {
   }
 };
 
+document.onpaste = (event: ClipboardEvent) => {
+  const data = event.clipboardData;
+  if (data && data.files.length > 0) {
+    onFileChanged(data.files);
+  }
+};
+
 const handlers = {
   onClick: () => input.value && input.value.onClick(),
   handleDrop: (event: DragEvent) => input.value && input.value.handleDrop(event),
