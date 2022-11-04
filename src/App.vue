@@ -52,8 +52,10 @@ const handlers = {
   <div class="content" :style="{ background }">
     <div class="wrapper" @click="handlers.onClick" @drop="handlers.handleDrop" @dragover="handlers.handleDragOver"
       @dragenter="handlers.handleDragEnter" @dragleave="handlers.handleDragLeave">
-      <Dropzone v-if="!imgSrc" />
-      <Image v-else :imgSrc="imgSrc" />
+      <Transition name="fade" mode="out-in">
+        <Dropzone v-if="!imgSrc" />
+        <Image v-else :imgSrc="imgSrc" />
+      </Transition>
     </div>
     <Input ref="input" :imgSrc="imgSrc" @onFileChanged="onFileChanged" />
     <MostUsed :colors="colors" />
@@ -71,6 +73,10 @@ const handlers = {
   transition: background 1s ease-in;
 }
 
+button {
+  color: black
+}
+
 .wrapper {
   width: 600px;
   height: 600px;
@@ -80,10 +86,21 @@ const handlers = {
   backdrop-filter: blur(5px);
   border-radius: 20px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .color {
   width: 100px;
   height: 100px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease-in;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
