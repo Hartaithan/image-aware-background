@@ -5,7 +5,7 @@ import MostUsed from './components/MostUsed.vue';
 import type { IColor } from './models/ColorModel';
 import { createCanvas } from './canvas';
 import { getDominantColor } from './color';
-import type { IInputExposed } from './models/InputModel';
+import type { IInputMethods } from './models/InputModel';
 import Dropzone from './components/Dropzone.vue';
 import Image from './components/Image.vue';
 
@@ -13,7 +13,7 @@ const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);
 const background = ref<string | undefined>(undefined);
 const colors = ref<IColor[]>([]);
-const input = ref<IInputExposed | null>(null);
+const input = ref<IInputMethods | null>(null);
 
 const onFileChanged = async (files: FileList) => {
   const image = files[0];
@@ -47,8 +47,8 @@ const handlers = {
       @dragenter="handlers.handleDragEnter" @dragleave="handlers.handleDragLeave">
       <Dropzone v-if="!imgSrc" />
       <Image v-else :imgSrc="imgSrc" />
-      <Input ref="input" :imgSrc="imgSrc" @onFileChanged="onFileChanged" />
     </div>
+    <Input ref="input" :imgSrc="imgSrc" @onFileChanged="onFileChanged" />
     <MostUsed :colors="colors" />
   </div>
 </template>

@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
 
-export interface IInputExposed {
+export interface IInputMethods {
   inputRef: Ref<HTMLInputElement | null>;
   onChange: ($event: Event) => void;
   onClick: () => void;

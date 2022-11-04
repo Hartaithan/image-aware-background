@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IInputExposed } from '@/models/InputModel';
+import type { IInputMethods } from '@/models/InputModel';
 import { ref } from 'vue';
 
 const emit = defineEmits(['onFileChanged']);
@@ -41,7 +41,7 @@ const handleDragLeave = (event: DragEvent) => {
   target.classList.remove('on-drag');
 };
 
-defineExpose<IInputExposed>({
+defineExpose<IInputMethods>({
   inputRef,
   onChange,
   onClick: onInputClick,
