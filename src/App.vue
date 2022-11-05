@@ -9,15 +9,17 @@ import type { IInputMethods } from './models/InputModel';
 import Dropzone from './components/Dropzone.vue';
 import Image from './components/Image.vue';
 
-const file = ref<File | null>(null);
 const imgSrc = ref<string | undefined>(undefined);
 const background = ref<string | undefined>(undefined);
 const colors = ref<IColor[]>([]);
 const input = ref<IInputMethods | null>(null);
 
+const onPasteLink = async (link: string) => {
+  imgSrc.value = link;
+};
+
 const onFileChanged = async (files: FileList) => {
   const image = files[0];
-  file.value = image;
   imgSrc.value = URL.createObjectURL(image);
   const canvas = await createCanvas(image);
   if (canvas) {
@@ -33,9 +35,16 @@ const onFileChanged = async (files: FileList) => {
 };
 
 document.onpaste = (event: ClipboardEvent) => {
-  const data = event.clipboardData;
-  if (data && data.files.length > 0) {
+  if (!event.clipboardData) {
+    return;
+  }
+  const data = { text: event.clipboardData.getData("text"), files: event.clipboardData.files };
+  if (data.text) {
+    onPasteLink(data.text);
+  } else if (data.files && data.files.length > 0) {
     onFileChanged(data.files);
+  } else {
+    console.error('clipboard data error');
   }
 };
 
