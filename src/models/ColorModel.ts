@@ -13,3 +13,5 @@ export interface IDominantColor {
   value: IColor;
   mostUsed: IColor[];
 }
+
+export type CreateCanvasData = "file" | "link";

@@ -16,12 +16,23 @@ const input = ref<IInputMethods | null>(null);
 
 const onPasteLink = async (link: string) => {
   imgSrc.value = link;
+  const canvas = await createCanvas('link', link);
+  if (canvas) {
+    const blockSize = 5;
+    const { ctx, width, height } = canvas;
+    const { value, mostUsed } = getDominantColor(blockSize, ctx, width, height);
+    colors.value = mostUsed;
+    background.value = value.hex;
+    console.info('dominant color', value);
+    console.info('most used colors:');
+    console.table(mostUsed);
+  }
 };
 
 const onFileChanged = async (files: FileList) => {
   const image = files[0];
   imgSrc.value = URL.createObjectURL(image);
-  const canvas = await createCanvas(image);
+  const canvas = await createCanvas('file', image);
   if (canvas) {
     const blockSize = 5;
     const { ctx, width, height } = canvas;

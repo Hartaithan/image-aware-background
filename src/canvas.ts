@@ -1,3 +1,4 @@
+import type { CreateCanvasData } from "./models/ColorModel";
 import type { CanvasObject } from "./models/ContextModel";
 
 export const imageLoader = (
@@ -12,10 +13,26 @@ export const imageLoader = (
 };
 
 export const createCanvas = async (
-  blob: File
+  type: CreateCanvasData,
+  data: Blob | string
 ): Promise<CanvasObject | null> => {
   const image = new Image();
-  const url = URL.createObjectURL(blob);
+  image.crossOrigin = "Anonymous";
+  let url: string | null;
+  switch (type) {
+    case "file":
+      url = URL.createObjectURL(data as Blob);
+      break;
+    case "link":
+      url = data as string;
+      break;
+    default:
+      url = null;
+      break;
+  }
+  if (!url) {
+    return null;
+  }
   const loaded = await imageLoader(image, url);
   const canvas = document.createElement("canvas");
   canvas.setAttribute("visibility", "hidden");
