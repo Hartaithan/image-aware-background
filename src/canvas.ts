@@ -6,7 +6,8 @@ export const imageLoader = (
   url: string
 ): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
-    image.src = url;
+    image.crossOrigin = "Anonymous";
+    image.src = url + "?r=" + Math.floor(Math.random() * 100000);
     image.onload = () => resolve(image);
     image.onerror = () => reject(image);
   });
@@ -17,7 +18,6 @@ export const createCanvas = async (
   data: Blob | string
 ): Promise<CanvasObject | null> => {
   const image = new Image();
-  image.crossOrigin = "Anonymous";
   let url: string | null;
   switch (type) {
     case "file":
