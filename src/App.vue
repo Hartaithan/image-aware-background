@@ -109,8 +109,24 @@ button {
   overflow: hidden;
 }
 
-.color {
-  width: 100px;
-  height: 100px;
+@media (max-width: 1400px) {
+  .wrapper {
+    width: 500px;
+    height: 500px;
+  }
+}
+
+@media (max-width: 992px) {
+  .wrapper {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 375px) {
+  .wrapper {
+    width: 320px;
+    height: 320px;
+  }
 }
 </style>
