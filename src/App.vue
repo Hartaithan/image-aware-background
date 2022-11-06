@@ -123,10 +123,17 @@ button {
   }
 }
 
-@media (max-width: 375px) {
+@media (max-width: 576px) {
   .wrapper {
     width: 320px;
     height: 320px;
+  }
+}
+
+@media (max-width: 375px) {
+  .wrapper {
+    width: 250px;
+    height: 250px;
   }
 }
 </style>
