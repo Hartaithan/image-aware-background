@@ -7,7 +7,7 @@ export const imageLoader = (
 ): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     image.crossOrigin = "Anonymous";
-    image.src = url + "?r=" + Math.floor(Math.random() * 100000);
+    image.src = url;
     image.onload = () => resolve(image);
     image.onerror = () => reject(image);
   });
