@@ -7,7 +7,7 @@ export const imageLoader = (
 ): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     image.crossOrigin = "Anonymous";
-    image.src = url;
+    image.src = "https://api.allorigins.win/raw?url=" + url;
     image.onload = () => resolve(image);
     image.onerror = () => reject(image);
   });
