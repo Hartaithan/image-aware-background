@@ -8,15 +8,14 @@ import { getDominantColor } from './color';
 import type { IInputMethods } from './models/InputModel';
 import Dropzone from './components/Dropzone.vue';
 import Image from './components/Image.vue';
+import type { CanvasObject } from './models/ContextModel';
 
 const imgSrc = ref<string | undefined>(undefined);
 const background = ref<string | undefined>(undefined);
 const colors = ref<IColor[]>([]);
 const input = ref<IInputMethods | null>(null);
 
-const onPasteLink = async (link: string) => {
-  imgSrc.value = link;
-  const canvas = await createCanvas('link', link, true);
+const handleCanvas = (canvas: CanvasObject | null) => {
   if (canvas) {
     const blockSize = 5;
     const { ctx, width, height } = canvas;
@@ -26,23 +25,22 @@ const onPasteLink = async (link: string) => {
     console.info('dominant color', value);
     console.info('most used colors:');
     console.table(mostUsed);
+  } else {
+    console.error('canvas not found');
   }
+};
+
+const onPasteLink = async (link: string) => {
+  imgSrc.value = link;
+  const canvas = await createCanvas('link', link, true);
+  handleCanvas(canvas);
 };
 
 const onFileChanged = async (files: FileList) => {
   const image = files[0];
   imgSrc.value = URL.createObjectURL(image);
   const canvas = await createCanvas('file', image);
-  if (canvas) {
-    const blockSize = 5;
-    const { ctx, width, height } = canvas;
-    const { value, mostUsed } = getDominantColor(blockSize, ctx, width, height);
-    colors.value = mostUsed;
-    background.value = value.hex;
-    console.info('dominant color', value);
-    console.info('most used colors:');
-    console.table(mostUsed);
-  }
+  handleCanvas(canvas);
 };
 
 document.onpaste = (event: ClipboardEvent) => {
