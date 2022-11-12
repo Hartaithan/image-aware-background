@@ -73,8 +73,10 @@ const handlers = {
     <div class="wrapper" @click="handlers.onClick" @drop="handlers.handleDrop" @dragover="handlers.handleDragOver"
       @dragenter="handlers.handleDragEnter" @dragleave="handlers.handleDragLeave">
       <Transition name="slow-fade" mode="out-in">
-        <Dropzone v-if="!imgSrc" />
-        <Image v-else :imgSrc="imgSrc" />
+        <Dropzone v-show="!imgSrc" />
+      </Transition>
+      <Transition name="slow-fade" mode="out-in">
+        <Image v-show="imgSrc" :imgSrc="imgSrc" />
       </Transition>
     </div>
     <Input ref="input" :imgSrc="imgSrc" @onFileChanged="onFileChanged" />

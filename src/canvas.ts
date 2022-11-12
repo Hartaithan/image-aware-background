@@ -1,15 +1,18 @@
 import type { CreateCanvasData } from "./models/ColorModel";
 import type { CanvasObject } from "./models/ContextModel";
 
-export const imageLoader = (
-  image: HTMLImageElement,
-  url: string
-): Promise<HTMLImageElement> => {
+export const imageLoader = (): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
-    image.crossOrigin = "Anonymous";
-    image.src = url;
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(image);
+    const image: HTMLImageElement | null = document.getElementById(
+      "preview"
+    ) as HTMLImageElement;
+    if (image) {
+      image.crossOrigin = "Anonymous";
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(image);
+    } else {
+      reject(null);
+    }
   });
 };
 
@@ -17,7 +20,6 @@ export const createCanvas = async (
   type: CreateCanvasData,
   data: Blob | string
 ): Promise<CanvasObject | null> => {
-  const image = new Image();
   let url: string | null;
   switch (type) {
     case "file":
@@ -33,11 +35,11 @@ export const createCanvas = async (
   if (!url) {
     return null;
   }
-  const loaded = await imageLoader(image, url);
+  const image = await imageLoader();
   const canvas = document.createElement("canvas");
   canvas.setAttribute("visibility", "hidden");
-  canvas.width = loaded.width;
-  canvas.height = loaded.height;
+  canvas.width = image.width;
+  canvas.height = image.height;
   const ctx = canvas.getContext("2d");
   if (ctx) {
     ctx.drawImage(image, 0, 0);
