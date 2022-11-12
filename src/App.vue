@@ -16,7 +16,7 @@ const input = ref<IInputMethods | null>(null);
 
 const onPasteLink = async (link: string) => {
   imgSrc.value = link;
-  const canvas = await createCanvas('link', link);
+  const canvas = await createCanvas('link', link, true);
   if (canvas) {
     const blockSize = 5;
     const { ctx, width, height } = canvas;

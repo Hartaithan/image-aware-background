@@ -3,11 +3,19 @@ import type { CanvasObject } from "./models/ContextModel";
 
 export const imageLoader = (
   image: HTMLImageElement,
-  url: string
+  url: string,
+  proxy: boolean = false
 ): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     image.crossOrigin = "Anonymous";
-    image.src = "https://api.allorigins.win/raw?url=" + url;
+    switch (proxy) {
+      case true:
+        image.src = "https://api.allorigins.win/raw?url=" + url;
+        break;
+      default:
+        image.src = url;
+        break;
+    }
     image.onload = () => resolve(image);
     image.onerror = () => reject(image);
   });
@@ -15,7 +23,8 @@ export const imageLoader = (
 
 export const createCanvas = async (
   type: CreateCanvasData,
-  data: Blob | string
+  data: Blob | string,
+  proxy: boolean = false
 ): Promise<CanvasObject | null> => {
   const image = new Image();
   let url: string | null;
@@ -33,7 +42,7 @@ export const createCanvas = async (
   if (!url) {
     return null;
   }
-  const loaded = await imageLoader(image, url);
+  const loaded = await imageLoader(image, url, proxy);
   const canvas = document.createElement("canvas");
   canvas.setAttribute("visibility", "hidden");
   canvas.width = loaded.width;
