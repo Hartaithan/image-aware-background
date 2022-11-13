@@ -9,20 +9,16 @@ const props = defineProps<IMostUsedProps>();
 </script>
 
 <template>
-  <Transition name="long-fade">
-    <template v-if="colors.length > 0">
-      <div class="colors-wrapper">
-        <p class="title">MOST USED COLORS</p>
-        <div class="colors">
-          <div class="color" v-for="(color, index) in props.colors" :id="'color' + (index + 1)" :key="color.hex"
-            :style="{ background: color.hex }">
-            <p>RGB: {{ color.rgb }}</p>
-            <p>HEX: {{ color.hex }}</p>
-          </div>
-        </div>
+  <div class="colors-wrapper">
+    <p class="title">MOST USED COLORS</p>
+    <div class="colors">
+      <div class="color" v-for="(color, index) in props.colors" :id="'color' + (index + 1)" :key="color.hex"
+        :style="{ background: color.hex }">
+        <p>RGB: {{ color.rgb }}</p>
+        <p>HEX: {{ color.hex }}</p>
       </div>
-    </template>
-  </Transition>
+    </div>
+  </div>
 </template>
     
 <style scoped>

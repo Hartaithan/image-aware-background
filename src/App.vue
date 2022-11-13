@@ -76,14 +76,18 @@ const handlers = {
   <div class="content" :style="{ background }">
     <div class="wrapper" @click="handlers.onClick" @drop="handlers.handleDrop" @dragover="handlers.handleDragOver"
       @dragenter="handlers.handleDragEnter" @dragleave="handlers.handleDragLeave">
-      <Loader v-if="isLoading" />
+      <Transition name="fade">
+        <Loader v-if="isLoading" />
+      </Transition>
       <Transition name="fade" mode="out-in">
         <Dropzone v-if="!imgSrc" />
         <Image v-else :imgSrc="imgSrc" />
       </Transition>
     </div>
     <Input ref="input" :imgSrc="imgSrc" @onFileChanged="onFileChanged" />
-    <MostUsed :colors="colors" />
+    <Transition name="long-fade">
+      <MostUsed v-if="colors.length > 0 && !isLoading" :colors="colors" />
+    </Transition>
   </div>
 </template>
 
