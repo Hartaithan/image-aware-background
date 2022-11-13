@@ -9,11 +9,13 @@ import type { IInputMethods } from './models/InputModel';
 import Dropzone from './components/Dropzone.vue';
 import Image from './components/Image.vue';
 import type { CanvasObject } from './models/ContextModel';
+import Loader from './components/Loader.vue';
 
 const imgSrc = ref<string | undefined>(undefined);
 const background = ref<string | undefined>(undefined);
 const colors = ref<IColor[]>([]);
 const input = ref<IInputMethods | null>(null);
+const isLoading = ref<boolean>(false);
 
 const handleCanvas = (canvas: CanvasObject | null) => {
   if (canvas) {
@@ -31,16 +33,20 @@ const handleCanvas = (canvas: CanvasObject | null) => {
 };
 
 const onPasteLink = async (link: string) => {
+  isLoading.value = true;
   imgSrc.value = link;
   const canvas = await createCanvas('link', link, true);
   handleCanvas(canvas);
+  isLoading.value = false;
 };
 
 const onFileChanged = async (files: FileList) => {
+  isLoading.value = true;
   const image = files[0];
   imgSrc.value = URL.createObjectURL(image);
   const canvas = await createCanvas('file', image);
   handleCanvas(canvas);
+  isLoading.value = false;
 };
 
 document.onpaste = (event: ClipboardEvent) => {
@@ -70,7 +76,8 @@ const handlers = {
   <div class="content" :style="{ background }">
     <div class="wrapper" @click="handlers.onClick" @drop="handlers.handleDrop" @dragover="handlers.handleDragOver"
       @dragenter="handlers.handleDragEnter" @dragleave="handlers.handleDragLeave">
-      <Transition name="slow-fade" mode="out-in">
+      <Loader v-if="isLoading" />
+      <Transition name="fade" mode="out-in">
         <Dropzone v-if="!imgSrc" />
         <Image v-else :imgSrc="imgSrc" />
       </Transition>
@@ -99,6 +106,7 @@ button {
   width: 600px;
   height: 600px;
   padding: 10px;
+  position: relative;
   background-color: var(--blurred-bg);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);

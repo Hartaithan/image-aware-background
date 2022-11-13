@@ -1,10 +1,10 @@
-.slow-fade-enter-active,
-.slow-fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s ease-in;
 }
 
-.slow-fade-enter-from,
-.slow-fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
